@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import model.Clan;
 import model.CsvCitac;
 import model.DataPovezivac;
@@ -17,6 +19,7 @@ public class ClanController {
     private List<Clan> clanovi;
     private List<TreningPlan> treningPlanovi;
     private List<Takmicenje> takmicenja;
+    private List<Clan> trenutnoPrikazaniClanovi;
 
     public ClanController(ClanView view) {
         this.view = view;
@@ -72,8 +75,24 @@ public class ClanController {
     	        view.prikaziClanove(filtriraniClanovi);
     	    }
     	});
-    	}
-
     	
-
+    	view.getUvidTakmicenjaButton().addActionListener(new ActionListener() {
+    	    @Override
+    	    public void actionPerformed(ActionEvent e) {
+    	        int selectedRow = view.getTabela().getSelectedRow();
+    	        if (selectedRow == -1) {
+    	            JOptionPane.showMessageDialog(view, 
+    	                "Morate odabrati člana iz tabele!", 
+    	                "Greška", 
+    	                JOptionPane.WARNING_MESSAGE);
+    	            return;
+    	        }
+    	        
+    	        Clan selectedClan = trenutnoPrikazaniClanovi.get(selectedRow);
+    	        view.prikaziDetaljeTakmicenja(selectedClan.getTakmicenja());
+    	    }
+    	});
+    	}
+    
+    	
 }
